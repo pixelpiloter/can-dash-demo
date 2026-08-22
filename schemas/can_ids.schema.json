@@ -1,0 +1,84 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CAN IDs Configuration Schema",
+  "description": "CAN signal definition schema for cluster-logic",
+  "type": "object",
+  "required": ["can_sources"],
+  "properties": {
+    "can_sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "can_id", "fields"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Source name (e.g. BMS, VCPU, MCU)"
+          },
+          "can_id": {
+            "oneOf": [
+              { "type": "integer", "minimum": 0, "maximum": 536870911 },
+              { "type": "string", "description": "0x-prefixed hex, e.g. 0x203" }
+            ],
+            "description": "CAN ID in decimal or 0x hex"
+          },
+          "period_ms": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["name", "byte", "bits"],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Signal name used as the key in the shared decode context"
+                },
+                "byte": {
+                  "oneOf": [
+                    {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 7,
+                      "description": "Single byte index"
+                    },
+                    {
+                      "type": "array",
+                      "items": { "type": "integer" },
+                      "minItems": 2,
+                      "maxItems": 2,
+                      "description": "Byte range [start, end]"
+                    }
+                  ]
+                },
+                "bits": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 64
+                },
+                "endian": {
+                  "type": "string",
+                  "enum": ["little", "big"]
+                },
+                "type": {
+                  "type": "string",
+                  "enum": ["uint1", "uint3", "uint8", "uint16", "uint32",
+                           "int8", "int16", "int32", "float"]
+                },
+                "formula": {
+                  "type": "string",
+                  "description": "Conversion formula using x as raw value, e.g. 'x / 10.0'"
+                },
+                "unit": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

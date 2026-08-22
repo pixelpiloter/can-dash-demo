@@ -1,0 +1,15 @@
+# 离线信号回放时间线（供 --replay / 场景测试）
+loop: false
+steps:
+  - at_ms: 0
+    signals:
+      speed: 0
+      temp: 20
+  - at_ms: 200
+    signals:
+      speed: 55
+      temp: 22
+  - at_ms: 500
+    signals:
+      speed: 110
+      temp: 25

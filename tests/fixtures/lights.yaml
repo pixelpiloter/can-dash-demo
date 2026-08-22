@@ -1,0 +1,3 @@
+lights:
+  - name: "tt.turn_left"
+    image: "tt_turn_left.png"

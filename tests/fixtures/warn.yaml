@@ -1,0 +1,11 @@
+warns:
+  - name: overspeed
+    text_zh: "超速"
+    priority: "A"
+    feature_id: 0x1
+    window_id: 1
+    proi: 100
+    type: 1
+    work_mode: 1
+    icons:
+      - demo.overspeed

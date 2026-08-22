@@ -1,0 +1,31 @@
+can_sources:
+  - name: TEST
+    can_id: '0x100'
+    period_ms: 100
+    fields:
+      - name: speed
+        byte: 0
+        bits: 8
+        endian: little
+        type: uint8
+      - name: temp
+        byte: 1
+        bits: 8
+        endian: little
+        type: int8
+      - name: rpm
+        byte: [2, 3]
+        bits: 16
+        endian: little
+        type: uint16
+      - name: volts
+        byte: [4, 5]
+        bits: 16
+        endian: big
+        type: uint16
+      - name: scaled
+        byte: 6
+        bits: 8
+        endian: little
+        type: uint8
+        formula: x * 0.5 + 10

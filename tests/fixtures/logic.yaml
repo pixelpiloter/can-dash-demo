@@ -1,0 +1,29 @@
+logics:
+  - id: speed_disp
+    can_signals: [speed]
+    expr: |
+      if (isovertime("speed") == 1) {
+        setdisplayvalue("cluster.speed", "string", "---");
+      } else {
+        setdisplayvalue("cluster.speed", "float", speed);
+      }
+  - id: temp_disp
+    can_signals: [temp]
+    expr: |
+      setdisplayvalue("cluster.temp", "float", temp);
+  - id: overspeed_warn
+    can_signals: [speed]
+    expr: |
+      if (isovertime("speed") == 0 and speed > 100) {
+        setwarnon("overspeed");
+      } else {
+        setwarnoff("overspeed");
+      }
+  - id: turn_light
+    can_signals: [speed]
+    expr: |
+      if (speed < 5) {
+        setlighton("tt.turn_left");
+      } else {
+        setlightoff("tt.turn_left");
+      }

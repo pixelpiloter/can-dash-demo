@@ -1,0 +1,263 @@
+# logic.yaml — CAN 报文驱动上屏规则（唯一规则文件，kanzi/qt/none 三宿主共用）
+#
+# can_signals = can_ids.yaml 的 DBC 字段名（数据源：--can-socket / --inject-demo）。
+# 上屏键统一使用 通用 HMI 属性名：cluster.*（主显示）/ tt.*（指示灯），
+# 原型展示字段用 demo.*；QML 与 Kanzi #DataSource 同名绑定。
+#
+# 超时占位：setdisplayvalue(id, "string", "--") 保留 QML 的 "--"/"---" 判定。
+
+logics:
+  # ── 主显示（cluster.*）──
+
+  - id: "demo_speed"
+    desc: "DBC 车速 → cluster.speed；超时显示 ---"
+    can_signals: ["vehicle_speed"]
+    expr: |
+      if (isovertime("vehicle_speed") == 1) {
+        setdisplayvalue("cluster.speed", "string", "---");
+      } else {
+        setdisplayvalue("cluster.speed", "float", vehicle_speed);
+      }
+
+  - id: "demo_gear"
+    desc: "DBC 档位 0P/1R/2N/3D → cluster.gear(1P/2R/3N/4D)；超时默认 D=4"
+    can_signals: ["gear_status"]
+    expr: |
+      if (isovertime("gear_status") == 1) {
+        setdisplayvalue("cluster.gear", "float", 4);
+      } else {
+        var g := gear_status;
+        if (g == 0) { g := 1; }
+        else if (g == 1) { g := 2; }
+        else if (g == 2) { g := 3; }
+        else { g := 4; }
+        setdisplayvalue("cluster.gear", "float", g);
+      }
+
+  - id: "demo_turn_lights"
+    desc: "DBC 转向信号（demo 用 brake 占位演示）→ tt.turn_left/TT_1"
+    can_signals: ["brake", "vehicle_speed"]
+    expr: |
+      if (vehicle_speed < 5) {
+        if (brake > 30) { setlighton("tt.turn_left"); }
+        else { setlightoff("tt.turn_left"); }
+        setlightoff("tt.turn_right");
+      } else {
+        setlightoff("tt.turn_left");
+        setlightoff("tt.turn_right");
+      }
+
+  # ── demo 展示字段（demo.*）──
+
+  - id: "demo_rpm"
+    desc: "电机转速 → demo.motorRpm"
+    can_signals: ["motor_rpm"]
+    expr: |
+      if (isovertime("motor_rpm") == 1) {
+        setdisplayvalue("demo.motorRpm", "string", "--");
+      } else {
+        setdisplayvalue("demo.motorRpm", "float", motor_rpm);
+      }
+
+  - id: "demo_battery"
+    desc: "电池电压/功率/SOC/温度 → demo.*；超时占位 --"
+    can_signals: ["bat_volt", "bat_curr", "bat_soc", "battery_temp"]
+    expr: |
+      if (isovertime("bat_volt") == 1) {
+        setdisplayvalue("demo.batVolt", "string", "--");
+      } else {
+        setdisplayvalue("demo.batVolt", "float", bat_volt);
+      }
+      if (isovertime("bat_curr") == 1) {
+        setdisplayvalue("demo.batPower", "string", "--");
+      } else {
+        setdisplayvalue("demo.batPower", "float", bat_volt * bat_curr / 1000);
+      }
+      if (isovertime("bat_soc") == 1) {
+        setdisplayvalue("demo.batSoc", "string", "--");
+      } else {
+        setdisplayvalue("demo.batSoc", "float", bat_soc);
+      }
+      if (isovertime("battery_temp") == 1) {
+        setdisplayvalue("demo.batteryTemp", "string", "--");
+      } else {
+        setdisplayvalue("demo.batteryTemp", "float", battery_temp);
+      }
+
+  - id: "demo_motor_temp"
+    desc: "电机温度 → demo.motorTemp"
+    can_signals: ["motor_temp"]
+    expr: |
+      if (isovertime("motor_temp") == 1) {
+        setdisplayvalue("demo.motorTemp", "string", "--");
+      } else {
+        setdisplayvalue("demo.motorTemp", "float", motor_temp);
+      }
+
+  - id: "demo_energy"
+    desc: "能量模式 0EV/1HEV/2ENG/3CHG/4OFF → demo.energyMode(数字) + demo.energyModeText(文本)"
+    can_signals: ["energy_mode"]
+    expr: |
+      if (isovertime("energy_mode") == 1) {
+        setdisplayvalue("demo.energyMode", "string", "--");
+        setdisplayvalue("demo.energyModeText", "string", "--");
+      } else {
+        setdisplayvalue("demo.energyMode", "float", energy_mode);
+        if (energy_mode == 0) { setdisplayvalue("demo.energyModeText", "string", "EV"); }
+        else if (energy_mode == 1) { setdisplayvalue("demo.energyModeText", "string", "HEV"); }
+        else if (energy_mode == 2) { setdisplayvalue("demo.energyModeText", "string", "ENG"); }
+        else if (energy_mode == 3) { setdisplayvalue("demo.energyModeText", "string", "CHG"); }
+        else { setdisplayvalue("demo.energyModeText", "string", "OFF"); }
+      }
+
+  - id: "demo_engine"
+    desc: "发动机转速 → demo.engineRpm"
+    can_signals: ["engine_rpm"]
+    expr: |
+      if (isovertime("engine_rpm") == 1) {
+        setdisplayvalue("demo.engineRpm", "string", "--");
+      } else {
+        setdisplayvalue("demo.engineRpm", "float", engine_rpm);
+      }
+
+  - id: "demo_charge"
+    desc: "充电功率 → demo.chargePowerText（-- 占位）"
+    can_signals: ["charge_power"]
+    expr: |
+      if (isovertime("charge_power") == 1) {
+        setdisplayvalue("demo.chargePowerText", "string", "--");
+      } else {
+        setdisplayvalue("demo.chargePowerText", "float", charge_power);
+      }
+
+  - id: "demo_brake"
+    desc: "制动踏板开度 → demo.brake（能量流图用）"
+    can_signals: ["brake"]
+    expr: |
+      if (isovertime("brake") == 1) {
+        setdisplayvalue("demo.brake", "float", 0);
+      } else {
+        setdisplayvalue("demo.brake", "float", brake);
+      }
+
+  - id: "demo_range"
+    desc: "EV/燃油续航、总续航、燃油液位 → demo.*"
+    can_signals: ["ev_range", "fuel_range", "fuel_level"]
+    expr: |
+      if (isovertime("ev_range") == 1) {
+        setdisplayvalue("demo.evRange", "string", "--");
+        setdisplayvalue("demo.totalRange", "string", "--");
+      } else {
+        setdisplayvalue("demo.evRange", "float", ev_range);
+        setdisplayvalue("demo.totalRange", "float", ev_range + fuel_range);
+      }
+      if (isovertime("fuel_range") == 1) {
+        setdisplayvalue("demo.fuelRange", "string", "--");
+      } else {
+        setdisplayvalue("demo.fuelRange", "float", fuel_range);
+      }
+      if (isovertime("fuel_level") == 1) {
+        setdisplayvalue("demo.fuelLevel", "string", "--");
+      } else {
+        setdisplayvalue("demo.fuelLevel", "float", fuel_level);
+      }
+
+  # ── demo 告警（warn id 声明在 warn.yaml）──
+
+  - id: "demo_overspeed"
+    desc: "DBC 车速 > 120 → overspeed"
+    can_signals: ["vehicle_speed"]
+    expr: |
+      if (isovertime("vehicle_speed") == 0 and vehicle_speed > 120) {
+        setwarnon("overspeed");
+      } else {
+        setwarnoff("overspeed");
+      }
+
+  - id: "demo_battery_alarms"
+    desc: "电池过压 > 400V / 低电量 < 10% → 对应 warn + 灯"
+    can_signals: ["bat_volt", "bat_soc"]
+    expr: |
+      if (isovertime("bat_volt") == 0 and bat_volt > 400) {
+        setwarnon("bat_overvolt");
+        setlighton("bat_warn_light");
+      } else {
+        setwarnoff("bat_overvolt");
+      }
+      if (isovertime("bat_soc") == 0 and bat_soc < 10) {
+        setwarnon("bat_soc_low");
+        setlightshine("bat_warn_light");
+      } else {
+        setwarnoff("bat_soc_low");
+        if (isovertime("bat_volt") == 0 and bat_volt <= 400) {
+          setlightoff("bat_warn_light");
+        }
+      }
+
+  - id: "demo_engine_fault"
+    desc: "发动机故障 → engine_fault + 灯"
+    can_signals: ["engine_fault"]
+    expr: |
+      if (isovertime("engine_fault") == 0 and engine_fault > 0) {
+        setwarnon("engine_fault");
+        setlighton("check_engine_light");
+      } else {
+        setwarnoff("engine_fault");
+        setlightoff("check_engine_light");
+      }
+
+  - id: "demo_charge_fault"
+    desc: "充电故障 → charge_fault"
+    can_signals: ["charge_fault"]
+    expr: |
+      if (isovertime("charge_fault") == 0 and charge_fault > 0) {
+        setwarnon("charge_fault");
+      } else {
+        setwarnoff("charge_fault");
+      }
+
+  - id: "demo_motor_overtemp"
+    desc: "电机温度 > 120℃ → motor_overtemp"
+    can_signals: ["motor_temp"]
+    expr: |
+      if (isovertime("motor_temp") == 0 and motor_temp > 120) {
+        setwarnon("motor_overtemp");
+      } else {
+        setwarnoff("motor_overtemp");
+      }
+
+  - id: "demo_fuel_low"
+    desc: "燃油 < 10% → fuel_low"
+    can_signals: ["fuel_level"]
+    expr: |
+      if (isovertime("fuel_level") == 0 and fuel_level < 10) {
+        setwarnon("fuel_low");
+      } else {
+        setwarnoff("fuel_low");
+      }
+
+  # ── 派生状态下沉（原 C++ 派生层迁移到规则引擎）──
+
+  - id: "demo_is_charge_view"
+    desc: "充电视图：energy_mode==3 或 charge_status!=0 → demo.isChargeView"
+    can_signals: ["energy_mode", "charge_status"]
+    expr: |
+      var charge_view := 0;
+      if (isovertime("energy_mode") == 0 and energy_mode == 3) {
+        charge_view := 1;
+      }
+      if (isovertime("charge_status") == 0 and charge_status != 0) {
+        charge_view := 1;
+      }
+      setdisplayvalue("demo.isChargeView", "float", charge_view);
+
+  - id: "demo_seatbelt"
+    desc: "主驾未系安全带 → seatbelt 告警"
+    can_signals: ["driver_occupied", "driver_buckled"]
+    expr: |
+      if (isovertime("driver_occupied") == 0 and driver_occupied > 0.5
+          and (isovertime("driver_buckled") == 1 or driver_buckled <= 0.5)) {
+        setwarnon("seatbelt");
+      } else {
+        setwarnoff("seatbelt");
+      }

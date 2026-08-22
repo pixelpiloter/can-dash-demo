@@ -1,0 +1,47 @@
+# warn.yaml — 演示用告警文案表
+#
+# name = LogicEngine warn id；logic 里 setwarnon/off(name) 直通。
+
+warns:
+  - name: "overspeed"
+    text_zh: "超速！请减速"
+    priority: "A"
+    font_size: 32
+    color: "#FF4400"
+
+  # ── Qt 原型 demo 告警 ──
+  - name: "bat_overvolt"
+    text_zh: "电池过压！"
+    priority: "A"
+    font_size: 32
+    color: "#FF4400"
+  - name: "bat_soc_low"
+    text_zh: "电量过低！"
+    priority: "A"
+    font_size: 32
+    color: "#FF4400"
+  - name: "engine_fault"
+    text_zh: "发动机故障！"
+    priority: "A"
+    font_size: 32
+    color: "#FF4400"
+  - name: "charge_fault"
+    text_zh: "充电故障！"
+    priority: "A"
+    font_size: 32
+    color: "#FF4400"
+  - name: "motor_overtemp"
+    text_zh: "电机过热！"
+    priority: "A"
+    font_size: 32
+    color: "#FF4400"
+  - name: "fuel_low"
+    text_zh: "燃油不足！"
+    priority: "B"
+    font_size: 28
+    color: "#FFAA00"
+  - name: "seatbelt"
+    text_zh: "请系好安全带"
+    priority: "B"
+    font_size: 28
+    color: "#FFAA00"

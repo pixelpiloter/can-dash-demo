@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build-test-none:
+    name: Build & Test (none)
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake g++ libyaml-cpp-dev
+      - name: Configure
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCLUSTER_LOGIC_UI=none
+      - name: Build
+        run: cmake --build build -j2
+      - name: Test
+        run: ctest --test-dir build --output-on-failure
+
+  build-test-qt:
+    name: Build & Test (qt)
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake g++ libyaml-cpp-dev qt6-base-dev qt6-declarative-dev libgl1-mesa-dev
+      - name: Configure
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCLUSTER_LOGIC_UI=qt
+      - name: Build
+        run: cmake --build build -j2
+      - name: Test
+        run: ctest --test-dir build --output-on-failure

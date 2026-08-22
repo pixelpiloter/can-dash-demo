@@ -1,0 +1,149 @@
+VERSION "cluster-logic-unified v1.0 - synthetic demo DBC"
+
+NS_ :
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+	BO_TX_BU_
+	BA_DEF_REL_
+	BA_REL_
+	BA_DEF_DEF_REL_
+	BU_SG_REL_
+	BU_EV_REL_
+	BU_BO_REL_
+	SG_MUL_VAL_
+
+BS_:
+
+BU_: BMS VCPU MCU SEAT DRIVER SIM
+
+BO_ 515 VCPU_Frame: 8 Vector__XXX
+ SG_ reserved_vcpu : 0|8@1+ (1,0) [0|255] ""  Vector__XXX
+ SG_ brake : 8|8@1+ (0.4,0) [0|100] "%"  Vector__XXX
+ SG_ vehicle_speed : 24|16@1+ (0.1,0) [0|6553.5] "km/h"  Vector__XXX
+
+BO_ 257 MCU_Frame: 8 Vector__XXX
+ SG_ motor_rpm : 0|16@1- (1,0) [-32768|32767] "rpm"  Vector__XXX
+ SG_ reserved_mcu : 16|16@1+ (1,0) [0|65535] ""  Vector__XXX
+ SG_ motor_temp : 32|8@1+ (1,-40) [-40|215] "degC"  Vector__XXX
+
+BO_ 752 SEAT_Frame: 8 Vector__XXX
+ SG_ driver_occupied : 0|1@1+ (1,0) [0|1] ""  Vector__XXX
+ SG_ reserved_seat1 : 1|7@1+ (1,0) [0|127] ""  Vector__XXX
+
+BO_ 753 SEAT_P_Frame: 8 Vector__XXX
+ SG_ passenger_occupied : 0|1@1+ (1,0) [0|1] ""  Vector__XXX
+ SG_ reserved_seat2 : 1|7@1+ (1,0) [0|127] ""  Vector__XXX
+
+BO_ 944 SEAT_BELT_Frame: 8 Vector__XXX
+ SG_ driver_buckled : 0|1@1+ (1,0) [0|1] ""  Vector__XXX
+ SG_ reserved_belt1 : 1|7@1+ (1,0) [0|127] ""  Vector__XXX
+
+BO_ 945 SEAT_BELT_P_Frame: 8 Vector__XXX
+ SG_ passenger_buckled : 0|1@1+ (1,0) [0|1] ""  Vector__XXX
+ SG_ reserved_belt2 : 1|7@1+ (1,0) [0|127] ""  Vector__XXX
+
+BO_ 946 SEAT_BELT_R_Frame: 8 Vector__XXX
+ SG_ rear_buckle : 0|3@1+ (1,0) [0|7] ""  Vector__XXX
+ SG_ reserved_belt3 : 3|5@1+ (1,0) [0|31] ""  Vector__XXX
+
+BO_ 773 ENGINE_Frame: 8 Vector__XXX
+ SG_ engine_rpm : 0|16@1+ (1,0) [0|65535] "rpm"  Vector__XXX
+ SG_ engine_fault : 16|8@1+ (1,0) [0|255] ""  Vector__XXX
+ SG_ reserved_engine : 24|40@1+ (1,0) [0|1099511627775] ""  Vector__XXX
+
+BO_ 774 CHG_STATUS_Frame: 8 Vector__XXX
+ SG_ charge_status : 0|8@1+ (1,0) [0|255] ""  Vector__XXX
+ SG_ charge_fault : 8|8@1+ (1,0) [0|255] ""  Vector__XXX
+ SG_ reserved_chg1 : 16|48@1+ (1,0) [0|281474976710655] ""  Vector__XXX
+
+BO_ 770 CHG_POWER_Frame: 8 Vector__XXX
+ SG_ charge_power : 0|16@1+ (0.1,0) [0|6553.5] "kW"  Vector__XXX
+ SG_ reserved_chg2 : 16|48@1+ (1,0) [0|281474976710655] ""  Vector__XXX
+
+BO_ 768 ENERGY_MODE_Frame: 8 Vector__XXX
+ SG_ energy_mode : 0|8@1+ (1,0) [0|4] ""  Vector__XXX
+ SG_ reserved_energy : 8|56@1+ (1,0) [0|72057594037927935] ""  Vector__XXX
+
+BO_ 775 HYBRID_EV_RANGE_Frame: 8 Vector__XXX
+ SG_ ev_range : 0|16@1+ (1,0) [0|65535] "km"  Vector__XXX
+ SG_ reserved_ev : 16|48@1+ (1,0) [0|281474976710655] ""  Vector__XXX
+
+BO_ 776 HYBRID_FUEL_Frame: 8 Vector__XXX
+ SG_ fuel_level : 0|8@1+ (1,0) [0|100] "%"  Vector__XXX
+ SG_ fuel_range : 8|16@1+ (1,0) [0|65535] "km"  Vector__XXX
+ SG_ reserved_fuel : 24|40@1+ (1,0) [0|1099511627775] ""  Vector__XXX
+
+BO_ 777 HYBRID_GEAR_Frame: 8 Vector__XXX
+ SG_ gear_status : 0|8@1+ (1,0) [0|255] ""  Vector__XXX
+ SG_ reserved_gear : 8|56@1+ (1,0) [0|72057594037927935] ""  Vector__XXX
+
+BO_ 928 TIRE_FL_Frame: 8 Vector__XXX
+ SG_ tire_pressure_fl : 0|16@1+ (0.01,0) [0|655.35] "bar"  Vector__XXX
+ SG_ reserved_fl : 16|48@1+ (1,0) [0|281474976710655] ""  Vector__XXX
+
+BO_ 929 TIRE_FR_Frame: 8 Vector__XXX
+ SG_ tire_pressure_fr : 0|16@1+ (0.01,0) [0|655.35] "bar"  Vector__XXX
+ SG_ reserved_fr : 16|48@1+ (1,0) [0|281474976710655] ""  Vector__XXX
+
+BO_ 930 TIRE_RL_Frame: 8 Vector__XXX
+ SG_ tire_pressure_rl : 0|16@1+ (0.01,0) [0|655.35] "bar"  Vector__XXX
+ SG_ reserved_rl : 16|48@1+ (1,0) [0|281474976710655] ""  Vector__XXX
+
+BO_ 931 TIRE_RR_Frame: 8 Vector__XXX
+ SG_ tire_pressure_rr : 0|16@1+ (0.01,0) [0|655.35] "bar"  Vector__XXX
+ SG_ reserved_rr : 16|48@1+ (1,0) [0|281474976710655] ""  Vector__XXX
+
+BO_ 784 BMS_Frame: 8 Vector__XXX
+ SG_ bat_volt : 0|16@1+ (0.1,0) [0|6553.5] "V"  Vector__XXX
+ SG_ bat_curr : 16|16@1+ (0.1,-1000) [-1000|5553.5] "A"  Vector__XXX
+ SG_ bat_soc : 32|8@1- (1,0) [-128|127] "%"  Vector__XXX
+ SG_ battery_temp : 40|8@1+ (1,-40) [-40|215] "degC"  Vector__XXX
+
+CM_ BO_ 515 "Demo VCPU frame: brake and vehicle speed (50ms)";
+CM_ BO_ 257 "Demo MCU frame: motor rpm and temperature (100ms)";
+CM_ BO_ 784 "Demo BMS frame: battery voltage/current/soc/temperature (100ms)";
+
+BA_DEF_ BO_  "GenMsgCycleTime" INT 0 65535;
+
+BA_ "GenMsgCycleTime" BO_ 515 50;
+BA_ "GenMsgCycleTime" BO_ 257 100;
+BA_ "GenMsgCycleTime" BO_ 752 500;
+BA_ "GenMsgCycleTime" BO_ 753 500;
+BA_ "GenMsgCycleTime" BO_ 944 200;
+BA_ "GenMsgCycleTime" BO_ 945 200;
+BA_ "GenMsgCycleTime" BO_ 946 200;
+BA_ "GenMsgCycleTime" BO_ 773 100;
+BA_ "GenMsgCycleTime" BO_ 774 200;
+BA_ "GenMsgCycleTime" BO_ 770 200;
+BA_ "GenMsgCycleTime" BO_ 768 200;
+BA_ "GenMsgCycleTime" BO_ 775 1000;
+BA_ "GenMsgCycleTime" BO_ 776 1000;
+BA_ "GenMsgCycleTime" BO_ 777 500;
+BA_ "GenMsgCycleTime" BO_ 928 200;
+BA_ "GenMsgCycleTime" BO_ 929 200;
+BA_ "GenMsgCycleTime" BO_ 930 200;
+BA_ "GenMsgCycleTime" BO_ 931 200;
+BA_ "GenMsgCycleTime" BO_ 784 100;
+
+VAL_ 515 vehicle_speed 0 "STOPPED" 50 "CITY" 120 "HIGHWAY" ;
+VAL_ 257 motor_rpm 0 "IDLE" 3000 "CRUISE" 7000 "REDLINE" ;
+VAL_ 768 energy_mode 0 "EV" 1 "HYBRID" 2 "ENGINE" 3 "CHARGING" 4 "OFF" ;
+VAL_ 777 gear_status 0 "P" 1 "R" 2 "N" 3 "D" ;

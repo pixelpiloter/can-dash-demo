@@ -1,0 +1,10 @@
+framework_version: "0.3.0"
+tick_hz: 10
+ui_fps_hz: 30
+data_source: "can_socket"
+ui_backend: "none"
+paths:
+  can_ids: "can_ids.yaml"
+  logic: "logic.yaml"
+  warn: "warn.yaml"
+  lights: "lights.yaml"

@@ -1,0 +1,21 @@
+# 演示驾驶场景：供 --replay 离线回放（无需 CAN 硬件）
+loop: true
+steps:
+  - at_ms: 0
+    signals:
+      vehicle_speed: 0
+      gear_status: 0
+      motor_rpm: 0
+      bat_soc: 80
+      driver_occupied: 1
+      driver_buckled: 1
+  - at_ms: 3000
+    signals:
+      vehicle_speed: 60
+      gear_status: 3
+      motor_rpm: 1800
+  - at_ms: 8000
+    signals:
+      vehicle_speed: 125
+      gear_status: 3
+      motor_rpm: 3500

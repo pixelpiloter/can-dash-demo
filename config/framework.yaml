@@ -1,0 +1,27 @@
+# framework.yaml — 统一工程（Kanzi/Qt 双 UI 宿主）启动契约
+#
+# ui_backend: 声明的 UI 后端；缺省不强制（控制台宿主可跑任意）。
+#   none  控制台/MVP
+#   qt    Qt6/QML 原型
+# 注意：编译期 CMake 的 CLUSTER_LOGIC_UI 决定二进制；此处仅是元数据/一致性提示，
+# 不阻止混跑（控制台宿主 + kanzi/qt 配置均可加载）。
+#
+# paths.logic     唯一规则文件（can_signals = can_ids.yaml 的 DBC 字段名，
+#                 上屏键 = cluster.*/TT.*/demo.*）
+
+framework_version: "0.3.0"
+
+ui_backend: "none"
+
+# logic tick 驱动上屏；指针要跟手则提高 tick（与 ui_fps 解耦）
+tick_hz: 30
+ui_fps_hz: 60
+
+data_source: "can_socket"
+can_socket_path: "/tmp/cluster_logic_can.sock"
+
+paths:
+  can_ids: "config/can_ids.yaml"       # DBC 字段名 + period → isovertime
+  logic: "config/logic.yaml"           # 规则（DBC 字段 → cluster.*/TT.*/demo.*）
+  warn: "config/warn.yaml"
+  lights: "config/lights.yaml"         # TT.* 与 Kanzi 属性同名

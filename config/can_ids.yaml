@@ -1,0 +1,277 @@
+# GENERATED FILE — 信号真源是 config/demo_vehicle.dbc。
+# 本文件是 DBC 布局的转写：can_id/字节/位域/端序/类型/公式，供 DecodeTable 解码。
+# 修改信号布局请同步 DBC，并保持本文件与 DBC 一致。
+#
+# schema 摘要:
+# - can_sources[].can_id: 接收帧匹配键，可写十进制或 0x 十六进制；按数值全局唯一。
+# - fields[]: name/byte/bits/endian/type 描述帧内原始值；field.name 跨所有 CAN ID
+#   全局唯一，因为解码结果进入同一个信号上下文。
+# - type 决定有符号补码解释（int* 为有符号，uint* 为无符号）；formula 可选，
+#   以 x 表示 raw，转换器只生成 DecodeTable 支持的线性四则表达式。
+# - unit 是物理值元数据，不参与换算；换算只由 formula 决定。
+# - period_ms 是报文周期，也是 LogicEngine 的超时基准（阈值为 period_ms × 5）。
+#   语义上应为正整数；当前启动加载器只硬校验字段存在，DBC 无周期时生成器回退 100ms。
+can_sources:
+- name: VCPU
+  can_id: '0x203'
+  period_ms: 50
+  fields:
+  - name: brake
+    byte: 1
+    bits: 8
+    endian: little
+    type: uint8
+    formula: x * 0.4
+    unit: '%'
+  - name: vehicle_speed
+    byte:
+    - 3
+    - 4
+    bits: 16
+    endian: little
+    type: uint16
+    formula: x * 0.1
+    unit: km/h
+- name: MCU
+  can_id: '0x101'
+  period_ms: 100
+  fields:
+  - name: motor_rpm
+    byte:
+    - 0
+    - 1
+    bits: 16
+    endian: little
+    type: int16
+    unit: rpm
+  - name: motor_temp
+    byte: 4
+    bits: 8
+    endian: little
+    type: uint8
+    formula: x + -40
+    unit: degC
+- name: SEAT
+  can_id: '0x2F0'
+  period_ms: 500
+  fields:
+  - name: driver_occupied
+    byte: 0
+    bits: 1
+    endian: little
+    type: uint1
+- name: SEAT_P
+  can_id: '0x2F1'
+  period_ms: 500
+  fields:
+  - name: passenger_occupied
+    byte: 0
+    bits: 1
+    endian: little
+    type: uint1
+- name: SEAT_BELT
+  can_id: '0x3B0'
+  period_ms: 200
+  fields:
+  - name: driver_buckled
+    byte: 0
+    bits: 1
+    endian: little
+    type: uint1
+- name: SEAT_BELT_P
+  can_id: '0x3B1'
+  period_ms: 200
+  fields:
+  - name: passenger_buckled
+    byte: 0
+    bits: 1
+    endian: little
+    type: uint1
+- name: SEAT_BELT_R
+  can_id: '0x3B2'
+  period_ms: 200
+  fields:
+  - name: rear_buckle
+    byte: 0
+    bits: 3
+    endian: little
+    type: uint3
+- name: ENGINE
+  can_id: '0x305'
+  period_ms: 100
+  fields:
+  - name: engine_rpm
+    byte:
+    - 0
+    - 1
+    bits: 16
+    endian: little
+    type: uint16
+    unit: rpm
+  - name: engine_fault
+    byte: 2
+    bits: 8
+    endian: little
+    type: uint8
+- name: CHG_STATUS
+  can_id: '0x306'
+  period_ms: 200
+  fields:
+  - name: charge_status
+    byte: 0
+    bits: 8
+    endian: little
+    type: uint8
+  - name: charge_fault
+    byte: 1
+    bits: 8
+    endian: little
+    type: uint8
+- name: CHG_POWER
+  can_id: '0x302'
+  period_ms: 200
+  fields:
+  - name: charge_power
+    byte:
+    - 0
+    - 1
+    bits: 16
+    endian: little
+    type: uint16
+    formula: x * 0.1
+    unit: kW
+- name: ENERGY_MODE
+  can_id: '0x300'
+  period_ms: 200
+  fields:
+  - name: energy_mode
+    byte: 0
+    bits: 8
+    endian: little
+    type: uint8
+- name: HYBRID_EV_RANGE
+  can_id: '0x307'
+  period_ms: 1000
+  fields:
+  - name: ev_range
+    byte:
+    - 0
+    - 1
+    bits: 16
+    endian: little
+    type: uint16
+    unit: km
+- name: HYBRID_FUEL
+  can_id: '0x308'
+  period_ms: 1000
+  fields:
+  - name: fuel_level
+    byte: 0
+    bits: 8
+    endian: little
+    type: uint8
+    unit: '%'
+  - name: fuel_range
+    byte:
+    - 1
+    - 2
+    bits: 16
+    endian: little
+    type: uint16
+    unit: km
+- name: HYBRID_GEAR
+  can_id: '0x309'
+  period_ms: 500
+  fields:
+  - name: gear_status
+    byte: 0
+    bits: 8
+    endian: little
+    type: uint8
+- name: TIRE_FL
+  can_id: '0x3A0'
+  period_ms: 200
+  fields:
+  - name: tire_pressure_fl
+    byte:
+    - 0
+    - 1
+    bits: 16
+    endian: little
+    type: uint16
+    formula: x * 0.01
+    unit: bar
+- name: TIRE_FR
+  can_id: '0x3A1'
+  period_ms: 200
+  fields:
+  - name: tire_pressure_fr
+    byte:
+    - 0
+    - 1
+    bits: 16
+    endian: little
+    type: uint16
+    formula: x * 0.01
+    unit: bar
+- name: TIRE_RL
+  can_id: '0x3A2'
+  period_ms: 200
+  fields:
+  - name: tire_pressure_rl
+    byte:
+    - 0
+    - 1
+    bits: 16
+    endian: little
+    type: uint16
+    formula: x * 0.01
+    unit: bar
+- name: TIRE_RR
+  can_id: '0x3A3'
+  period_ms: 200
+  fields:
+  - name: tire_pressure_rr
+    byte:
+    - 0
+    - 1
+    bits: 16
+    endian: little
+    type: uint16
+    formula: x * 0.01
+    unit: bar
+- name: BMS
+  can_id: '0x310'
+  period_ms: 100
+  fields:
+  - name: bat_volt
+    byte:
+    - 0
+    - 1
+    bits: 16
+    endian: little
+    type: uint16
+    formula: x * 0.1
+    unit: V
+  - name: bat_curr
+    byte:
+    - 2
+    - 3
+    bits: 16
+    endian: little
+    type: uint16
+    formula: x * 0.1 - 1000
+    unit: A
+  - name: bat_soc
+    byte: 4
+    bits: 8
+    endian: little
+    type: int8
+    unit: '%'
+  - name: battery_temp
+    byte: 5
+    bits: 8
+    endian: little
+    type: uint8
+    formula: x + -40
+    unit: degC

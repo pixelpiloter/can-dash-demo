@@ -1,0 +1,23 @@
+# lights.yaml — Telltales（name = Kanzi 属性）
+lights:
+  - name: "tt.turn_left"
+    image: "tt_turn_left.png"
+    size: { width: 48, height: 48 }
+    position: { x: 0, y: 0 }
+  - name: "tt.turn_right"
+    image: "tt_turn_right.png"
+    size: { width: 48, height: 48 }
+    position: { x: 0, y: 0 }
+  - name: "tt.hi_beam"
+    image: "tt_hi_beam.png"
+    size: { width: 48, height: 48 }
+    position: { x: 0, y: 0 }
+  # demo 告警灯（logic.yaml 的 demo_battery_alarms / demo_engine_fault 引用）
+  - name: "bat_warn_light"
+    image: "tt_bat_warn.png"
+    size: { width: 48, height: 48 }
+    position: { x: 0, y: 0 }
+  - name: "check_engine_light"
+    image: "tt_check_engine.png"
+    size: { width: 48, height: 48 }
+    position: { x: 0, y: 0 }
